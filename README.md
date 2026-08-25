@@ -30,11 +30,10 @@ parses quoted fields with a real state machine (`"9,5"` stays one field, `""` es
 ```bash
 npm install
 npm start        # http://localhost:3000
-npm test         # 22-assert edge-case suite, zero test dependencies
 ```
 Requires Node 18+. No environment variables beyond `PORT` (defaults to 3000). (If you don't have it just download it)
 
-## Known limitations (Yeah not everything is perfect not even this also all those who render the tables after JS loads I hate you since I cannot scrape form your site)
+## Known limitations (Yeah not everything is perfect not even this)
 
 - **JavaScript-rendered pages**: tables built client-side after load can't be extracted — only static `<table>` elements are found.
 - **Multi-line cells**: cells that wrap across lines in the source paste aren't reconstructed.
