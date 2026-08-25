@@ -4,7 +4,7 @@ Paste anything messy — a garbled table or a URL — and get back a perfectly c
 plus one-click APA/MLA citations for anything you pull from the web.
 
 No install and no signup needed. Also it uses no AI as it its not an AI app and no AI features. Also the data never leaves your browser so its lowkey safe af.
-
+<code> https://tidy-three.vercel.app/ </code> <strong> live demo link </strong>
 ## Why?
 Moving small amounts of structured data between tools that disagree on formatting is shitty. Like one thing asks for csv, another asks for tsv and another asks for json. like bruh why not agree on one thing?
 Also, 
