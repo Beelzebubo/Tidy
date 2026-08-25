@@ -14,6 +14,13 @@ Also,
 
 Tidy solves "paste messy thing → get clean thing" as one zero-friction destination. (Of course it does since its made by me.)
 
+<img width="1920" height="951" alt="Screenshot_20260825_194438" src="https://github.com/user-attachments/assets/a74cca1c-dd14-4753-87d1-203530f4f073" />
+
+<img width="1918" height="943" alt="Screenshot_20260826_004601" src="https://github.com/user-attachments/assets/b7985857-3f92-4118-aedc-e726ca9a669e" />
+
+
+<img width="1920" height="951" alt="Screenshot_20260826_004658" src="https://github.com/user-attachments/assets/af1afc93-4ad7-49e6-8e61-a175327e6efc" />
+
 ## Features
 
 **1. Paste-to-Clean** : paste raw tabular text; the tool detects the delimiter (comma/tab/pipe/whitespace-runs/mixed), 
