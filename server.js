@@ -71,8 +71,14 @@ async function fetchPage(rawUrl, redirects = 0) {
     return fetchPage(new URL(loc, url).href, redirects + 1);
   }
   if (!res.ok) {
+    if ((res.status === 503 || res.status === 429) && redirects < 1) {
+      await new Promise(r => setTimeout(r, 1000));
+      return fetchPage(rawUrl, redirects + 1);
+    }
     throw new UserError(res.status === 403 || res.status === 401
-      ? 'This site blocks automated access — try pasting the table text directly instead.'
+      ? 'This site blocks automated access, try pasting the table text directly instead.'
+      : res.status === 503 || res.status === 429
+      ? "This site is throttlin out server's request (Use localhose by cloning the repo to be fair works instantly if not — wait a few seconds and try again, or paste the table text directly instead."
       : `That page returned an error (HTTP ${res.status}).`);
   }
 
