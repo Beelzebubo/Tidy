@@ -1,14 +1,10 @@
-# Dependencies
 node_modules/
 
-# Logs
 *.log
 npm-debug.log*
 
-# Environment / secrets
 .env
 
 
-# Editor
 .vscode/
 
