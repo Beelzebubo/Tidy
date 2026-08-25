@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tidy — paste anything messy, get something clean</title>
+  <meta name="description" content="Paste messy tabular text and get clean Markdown, CSV, TSV or JSON. No install, no signup.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="col">
+  <header>
+    <div>
+      <h1>Tidy</h1>
+      <p class="tagline">Paste anything messy. Get something clean.</p>
+    </div>
+    <button id="theme-btn" class="icon-btn" aria-label="Toggle dark mode">◐</button>
+  </header>
+
+  <div class="paste-wrap">
+    <label for="input" class="sr-only">Input</label>
+    <textarea id="input" rows="9" autofocus placeholder="Paste a messy table, raw text, or a URL…
+
+…or drop a .csv / .txt file here" spellcheck="false"></textarea>
+    <div id="drop-hint" class="drop-hint" hidden>Drop to clean it →</div>
+  </div>
+
+  <div class="row">
+    <button id="clean-btn" class="btn-primary">Clean it <kbd>⌘↵</kbd></button>
+    <button class="example" data-example='Name, Age  Score
+John Smith,34   "9,5"
+"Doe, Jane" 29 8.7'>Try a messy table →</button>
+  </div>
+
+  <section id="output" hidden>
+    <p id="summary" class="summary"></p>
+
+    <ol id="steps" class="steps" hidden aria-live="polite"></ol>
+    <div class="skeleton" id="skeleton" hidden><i></i><i></i><i></i></div>
+
+    <select id="table-picker" hidden aria-label="Choose a table"></select>
+
+    <div id="tabs" role="group" aria-label="Output format">
+      <button data-fmt="preview" aria-pressed="true">Preview</button>
+      <button data-fmt="markdown" aria-pressed="false">Markdown</button>
+      <button data-fmt="csv" aria-pressed="false">CSV</button>
+      <button data-fmt="tsv" aria-pressed="false">TSV</button>
+      <button data-fmt="json" aria-pressed="false">JSON</button>
+    </div>
+
+    <pre id="result" tabindex="0" hidden></pre>
+    <div id="table-preview" class="table-scroll" hidden></div>
+
+    <div class="copyas">
+      <button class="copyas-btn" data-copyfmt="markdown"><small>Copy for</small><b>GitHub</b></button>
+      <button class="copyas-btn" data-copyfmt="tsv"><small>Copy for</small><b>Excel&nbsp;/&nbsp;Sheets</b></button>
+      <button class="copyas-btn" data-copyfmt="json"><small>Copy for</small><b>JavaScript</b></button>
+      <button class="copyas-btn ghost" id="download-btn"><small>Download</small><b>.csv</b></button>
+    </div>
+
+    <div id="warnings"></div>
+  </section>
+
+  <p id="error" hidden></p>
+  <button id="cite-instead-btn" class="example" hidden>Cite this page instead →</button>
+
+  <section id="cite" hidden>
+    <p class="summary">✓ Citation ready</p>
+    <div id="style-tabs" role="group" aria-label="Citation style">
+      <button data-style="apa" aria-pressed="true">APA</button>
+      <button data-style="mla" aria-pressed="false">MLA</button>
+    </div>
+    <p id="citation"></p>
+    <div class="row actions">
+      <button id="cite-copy-btn" class="btn-primary">Copy</button>
+      <button id="add-bib-btn" class="btn-primary">+ Add to bibliography</button>
+      <button id="export-bib-btn" class="btn-ghost" hidden>Export all</button>
+    </div>
+    <div id="bib"></div>
+  </section>
+
+  <footer class="foot">Everything runs in your browser — nothing is stored or sent anywhere except pages you ask us to read.</footer>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+</main>
+<script src="tidy-core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
