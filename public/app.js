@@ -36,7 +36,7 @@ async function showResult(r) {
   err.hidden = true;
   $('#cite').hidden = true;
 
-  // Transformation steps — the messy -> clean moment.
+
   const m = r.meta;
   const steps = [];
   if (m) {
@@ -138,8 +138,6 @@ async function fetchTable(url) {
   }
 }
 
-// --- Rendering ---
-
 function setFmt(f) {
   fmt = f;
   for (const t of $('#tabs').children) t.setAttribute('aria-pressed', String(t.dataset.fmt === f));
@@ -175,8 +173,6 @@ function previewTable(rows) {
   return table;
 }
 
-// --- Citations ---
-
 function renderCitation() {
   $('#citation').textContent = (citeStyle === 'apa' ? Tidy.toAPA : Tidy.toMLA)(fields);
 }
@@ -203,7 +199,7 @@ async function fetchCitation() {
   }
 }
 
-// --- Bibliography ---
+
 
 const BIB_KEY = 'tidy-bib';
 const normUrl = u => u.replace(/#.*$/, '').replace(/\/$/, '');
@@ -233,7 +229,7 @@ function renderBib() {
 }
 
 function copyText(text) {
-  // Clipboard API needs a secure context; fall back to execCommand over plain http.
+ 
   if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
   const ta = Object.assign(document.createElement('textarea'), { value: text, className: 'sr-only' });
   document.body.append(ta);
@@ -248,7 +244,6 @@ function flashCopied(btn) {
   setTimeout(() => btn.classList.remove('copied'), 1500);
 }
 
-// --- Wiring ---
 
 $('#clean-btn').addEventListener('click', clean);
 box.addEventListener('keydown', e => {
@@ -317,7 +312,7 @@ $('#export-bib-btn').addEventListener('click', () =>
     .then(() => flashCopied($('#export-bib-btn')))
 );
 
-// Drag-and-drop files into the paste area
+
 const wrap = $('.paste-wrap');
 ['dragenter', 'dragover'].forEach(ev =>
   wrap.addEventListener(ev, e => { e.preventDefault(); wrap.classList.add('dragging'); $('#drop-hint').hidden = false; })
@@ -336,7 +331,7 @@ wrap.addEventListener('drop', async e => {
   }
 });
 
-// Keyboard shortcuts: number keys switch output tabs when not typing
+
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') return; // handled on textarea
   if (e.target === box || e.metaKey || e.ctrlKey || e.altKey) return;

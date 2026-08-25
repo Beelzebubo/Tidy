@@ -15,7 +15,7 @@
     return { mean, cv: mean === 0 ? Infinity : Math.sqrt(variance) / mean };
   }
 
-  // Mask quoted segments, collapse 2+ space/tab runs outside quotes to \t, restore.
+
   function collapseWs(line) {
     const quotes = [];
     const masked = line.replace(/"(?:[^"]|"")*"/g, m => {
@@ -25,13 +25,9 @@
     return masked.replace(/ {2,}|\t+/g, '\t').replace(/\u0000(\d+)\u0000/g, (_, n) => quotes[+n]);
   }
 
-  // Returns { delim } — ',', '\t', '|', 'ws' (whitespace run), 'mix' (comma OR whitespace
-  // run, for PDF-style pastes), or null if nothing looks tabular. Scores candidates by the
-  // consistency of the field count they produce per line (coefficient of variation).
   function sniff(lines, warnings) {
     const ORDER = [',', '\t', '|', 'ws', 'mix'];
-    // Sniff on a quote-repaired copy so one unterminated quote can't break detection:
-    // lines with an odd quote count have quotes stripped for counting only.
+
     const repaired = lines.map(l => ((l.split('"').length - 1) % 2 === 1 ? l.replace(/"/g, '') : l));
     const cands = ORDER.map(d => ({
       d,
@@ -44,27 +40,23 @@
     for (const c of usable) c.s = stats(c.counts);
 
     if (lines.length < 3) {
-      // Too few rows to trust variance: prefer a delimiter every line agrees on.
+
       const unanimous = usable.find(c => c.counts.every(n => n === c.counts[0]));
       if (unanimous) return { delim: unanimous.d, warnings };
     }
 
-    usable.sort((a, b) => a.s.cv - b.s.cv); // stable: ties keep priority order
+    usable.sort((a, b) => a.s.cv - b.s.cv);
     const best = usable[0];
     if (best.s.cv > 0.5) {
       warnings.push({
         code: 'AMBIGUOUS_DELIMITER',
-        message: "Couldn't confidently detect the column separator — split on runs of whitespace.",
+        message: "Couldn't confidently detect the column separator",
       });
       return { delim: 'ws', cv: best.s.cv, warnings };
     }
     return { delim: best.d, cv: best.s.cv, warnings };
   }
 
-  // Quote-aware field tokenizer. A quote only opens at field start; "" is an escaped
-  // quote; junk after a closing quote is kept as-is (Excel-style leniency). delim 'mix'
-  // also treats commas, tabs, 2+ space runs, and whitespace right after a closing quote
-  // as boundaries — for messy PDF-style pastes with inconsistent separators.
   function tokenizeLine(line, delim) {
     const fields = [];
     let field = '';
@@ -91,7 +83,7 @@
           (c === ' ' && (line[i + 1] === ' ' || line[i + 1] === '\t')) ||
           ((c === ' ' || c === '\t') && justClosed);
       } else {
-        // 'ws' arrives pre-collapsed as '\t' via collapseWs
+
         isBoundary = delim !== 'ws' && c === delim;
       }
 
@@ -100,11 +92,10 @@
         field = '';
         justClosed = false;
         if (delim === 'mix' && (c === ' ' || c === '\t')) {
-          // consume the rest of the whitespace run
           while (i + 1 < line.length && (line[i + 1] === ' ' || line[i + 1] === '\t')) i++;
         }
       } else if (c === '"' && field.trim() === '') {
-        // A quote opens a quoted field only at field start.
+
         inQuotes = true;
         field = '';
         quoted++;
@@ -166,7 +157,7 @@
 
     if (delim === '|') rows = rows.filter(r => r.length > 1 || r[0].trim() !== '');
 
-    // Ragged-row normalization against modal length
+
     let padded = 0;
     let truncated = 0;
     if (rows.length > 1) {
@@ -196,8 +187,7 @@
     const LABELS = { ',': 'comma', '\t': 'tabs', '|': 'pipes', ws: 'spaces', mix: 'mixed separators' };
     const meta = {
       delimiter: LABELS[delim] || delim,
-      // Confidence from delimiter consistency: cv 0 → 100%, floor at 55% so the
-      // number never claims certainty it doesn't have.
+
       confidence: Math.max(55, Math.round(100 * (1 - Math.min(sniffed.cv, 0.45)))),
       rows: rows.length,
       columns: rows.length ? rows[0].length : 0,
@@ -276,8 +266,6 @@
       2
     );
   }
-
-  // --- Citation formatting ---
 
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'];

@@ -23,15 +23,15 @@ function isPrivateIp(ip) {
   if (net.isIPv4(v4)) {
     const [a, b] = v4.split('.').map(Number);
     return a === 0 || a === 10 || a === 127 ||
-      (a === 100 && b >= 64 && b <= 127) || // CGNAT / cloud metadata range
+      (a === 100 && b >= 64 && b <= 127) ||
       (a === 169 && b === 254) ||
       (a === 172 && b >= 16 && b <= 31) ||
       (a === 192 && b === 168);
   }
   const v6 = ip.toLowerCase();
   return v6 === '::1' || v6 === '::' ||
-    /^f[cd]/.test(v6) || // fc00::/7 unique local
-    v6.startsWith('fe80'); // link-local
+    /^f[cd]/.test(v6) ||
+    v6.startsWith('fe80');
 }
 
 async function fetchPage(rawUrl, redirects = 0) {
@@ -45,7 +45,7 @@ async function fetchPage(rawUrl, redirects = 0) {
 
   const addrs = await dns.lookup(url.hostname, { all: true })
     .catch(() => { throw new UserError("Couldn't find that site."); });
-  if (addrs.some(a => isPrivateIp(a.address))) throw invalidUrl(); // SSRF: same message, no internals leaked
+  if (addrs.some(a => isPrivateIp(a.address))) throw invalidUrl();
 
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), TIMEOUT_MS);
@@ -53,7 +53,7 @@ async function fetchPage(rawUrl, redirects = 0) {
   try {
     res = await fetch(url, {
       signal: ac.signal,
-      redirect: 'manual', // re-validate each hop
+      redirect: 'manual',
       headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml' },
     });
   } catch (e) {
@@ -76,8 +76,7 @@ async function fetchPage(rawUrl, redirects = 0) {
       : `That page returned an error (HTTP ${res.status}).`);
   }
 
-  // ponytail: trust content-length for the size cap instead of stream-abort; switch to
-  // counting bytes mid-stream if someone pastes a URL that lies about its headers.
+
   const len = Number(res.headers.get('content-length'));
   const type = res.headers.get('content-type') || '';
   if (!/html|xml|text/.test(type)) {
@@ -86,8 +85,7 @@ async function fetchPage(rawUrl, redirects = 0) {
   return { html: await res.text(), finalUrl: url.href };
 }
 
-// Expand a <table> into a rectangular grid, honoring colspan/rowspan like a browser
-// would, so rows stay aligned when Wikipedia-style tables use spanning cells.
+
 function tableToRows($, table) {
   const grid = [];
   const occupy = (r, c, text) => {
@@ -97,14 +95,14 @@ function tableToRows($, table) {
   $(table).find('tr').toArray().forEach((tr, ri) => {
     let ci = 0;
     grid[ri] = grid[ri] || [];
-    // skip cells already claimed by an earlier row's rowspan
+
     while (grid[ri][ci] !== undefined) ci++;
     $(tr).find('td, th').toArray().forEach(cell => {
       const $cell = $(cell);
-      const cs = Math.min(Number($cell.attr('colspan')) || 1, 50); // ponytail: cap spans; huge colspans are layout junk
+      const cs = Math.min(Number($cell.attr('colspan')) || 1, 50);
       const rs = Math.min(Number($cell.attr('rowspan')) || 1, 5000);
       const text = $cell.text().replace(/\s+/g, ' ').trim();
-      // repeat spanned text into every covered slot — matches what a reader sees
+
       for (let dr = 0; dr < rs; dr++) {
         for (let dc = 0; dc < cs; dc++) {
           occupy(ri + dr, ci + dc, text);
@@ -122,7 +120,7 @@ function tableToRows($, table) {
 function extractTables(html) {
   const $ = cheerio.load(html);
   let tables = $('table')
-    .not('table table') // skip inner tables of nested layouts
+    .not('table table')
     .toArray()
     .map(table => tableToRows($, table))
     .map(rows => rows.filter(cells => cells.length && cells.some(c => c !== '')))
@@ -131,13 +129,12 @@ function extractTables(html) {
       rows,
       preview: rows.slice(0, 2).map(r => r.join(' | ')).join(' ⏎ ').slice(0, 80),
     }));
-  // Real data tables beat layout/nav boxes: prefer multi-column, biggest first.
+
   const multi = tables.filter(t => t.rows[0].length >= 2);
   if (multi.length) tables = multi;
   return tables.sort((a, b) => b.rows.length * b.rows[0].length - a.rows.length * a.rows[0].length);
 }
 
-// ponytail: global limiter, not per-IP — fine until this is publicly deployed.
 let hits = [];
 function limited() {
   const now = Date.now();
@@ -178,7 +175,7 @@ function metaContent($, sel) {
 
 function titleCase(host) {
   const labels = host.replace(/^www\./, '').split('.');
-  // skip noise subdomains: 'm', language codes like 'en', 'pt-br'
+
   let name = labels[0];
   if ((labels[0].length <= 3 || labels[0].includes('-')) && labels.length > 2) name = labels[1];
   return name.charAt(0).toUpperCase() + name.slice(1);
@@ -200,7 +197,7 @@ app.post('/api/cite', async (req, res) => {
       metaContent($, 'meta[property="article:author"]') ||
       $('.byline, [rel="author"], [itemprop="author"]').first().text().replace(/\s+/g, ' ').trim() ||
       null;
-    if (author && /^https?:\/\//i.test(author)) author = null; // article:author is often a profile URL
+    if (author && /^https?:\/\//i.test(author)) author = null;
     const date =
       metaContent($, 'meta[property="article:published_time"]') ||
       metaContent($, 'meta[name="date"]') ||
