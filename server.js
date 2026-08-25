@@ -214,3 +214,5 @@ app.post('/api/cite', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 if (!process.env.VERCEL) app.listen(PORT, () => console.log(`Tidy running at http://localhost:${PORT}`));
+
+module.exports = app;
