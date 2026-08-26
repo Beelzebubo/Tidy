@@ -1,6 +1,6 @@
 # Tidy
 
-Paste anything messy — a garbled table or a URL — and get back a perfectly clean, instantly usable table in whatever format you need (Markdown, CSV, TSV, JSON),
+Paste anything messy, a messy table or a URL containing the table you want to export and get back a perfectly clean, instantly usable table in whatever format you need (Markdown, CSV, TSV, JSON),
 plus one-click APA/MLA citations for anything you pull from the web.
 
 No install and no signup needed. Also it uses no AI as it its not an AI app and no AI features. Also the data never leaves your browser so its lowkey safe af.
@@ -23,13 +23,13 @@ Tidy solves "paste messy thing → get clean thing" as one zero-friction destina
 
 ## Features
 
-**1. Paste-to-Clean** : paste raw tabular text; the tool detects the delimiter (comma/tab/pipe/whitespace-runs/mixed), 
+**1. Paste-to-Clean** : paste raw tabular text; the tool detects the delimiter (comma/tab/pipe/whitespace etc), 
 
-parses quoted fields with a real state machine (`"9,5"` stays one field, `""` escapes work), normalizes ragged rows with honest warnings, and exports to Markdown / CSV / TSV / JSON.
+parses quoted fields and normalizes ragged rows with honest warnings, and exports to Markdown / CSV / TSV / JSON.
 
 **2. URL-to-Table** : paste a URL; the server fetches the page (avoiding CORS), extracts all `<table>` elements, and lets you pick one to export in any format.
 
-**3. Instant Citation** : paste an article URL and get an APA or MLA citation built from the page's metadata (Open Graph → `<title>` ->  byline fallback chains), with a running bibliography stored locally in your browser.
+**3. Instant Citation** : paste an article URL and get an APA or MLA citation built from the page's metadata, with a running bibliography stored locally in your browser.
 (and its for **free** free you hear no 20$ like the other shitty sites)
 
 ## Run it (If you decide to run it locally by cloning the repo)
@@ -42,10 +42,10 @@ Requires Node 18+. No environment variables beyond `PORT` (defaults to 3000). (I
 
 ## Known limitations (Yeah not everything is perfect not even this)
 
-- **JavaScript-rendered pages**: tables built client-side after load can't be extracted — only static `<table>` elements are found.
+- **JavaScript-rendered pages**: tables built client-side after load can't be extracted. Basically the sites that load tables with Javascript cannot be extracted,only static `<table>` elements containing sites can be extracted from URL. In such case best to copy the table you want and paste it in the field and do it that way.
 - **Multi-line cells**: cells that wrap across lines in the source paste aren't reconstructed.
 - **Mixed-delimiter soup**: pastes where separators vary within a line are handled best-effort with explicit warnings rather than silent guesses (e.g., `"Doe, Jane" 29 8.7` keeps the quoted name intact but may merge trailing single-space-separated numbers).
-- **Citations are plain text** — italics (journal/book titles) can't be carried into plain-text output; apply them in your document. Author/date coverage depends on each site's metadata quality; missing fields degrade gracefully ("n.d.", title-first citations).
+- **Citations are plain text** — italics (journal/book titles) can't be carried into plain-text output and be applied in your document. Author/date coverage depends on each site's metadata quality; missing fields degrade gracefully ("n.d.", title-first citations).
 - **HTML `colspan`/`rowspan`** cells are read as flat text cells.
 
 ## License
