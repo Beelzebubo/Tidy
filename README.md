@@ -44,8 +44,8 @@ Requires Node 18+. No environment variables beyond `PORT` (defaults to 3000). (I
 
 - **JavaScript-rendered pages**: tables built client-side after load can't be extracted. Basically the sites that load tables with Javascript cannot be extracted,only static `<table>` elements containing sites can be extracted from URL. In such case best to copy the table you want and paste it in the field and do it that way.
 - **Multi-line cells**: cells that wrap across lines in the source paste aren't reconstructed.
-- **Mixed-delimiter soup**: pastes where separators vary within a line are handled best-effort with explicit warnings rather than silent guesses (e.g., `"Doe, Jane" 29 8.7` keeps the quoted name intact but may merge trailing single-space-separated numbers).
-- **Citations are plain text** — italics (journal/book titles) can't be carried into plain-text output and be applied in your document. Author/date coverage depends on each site's metadata quality; missing fields degrade gracefully ("n.d.", title-first citations).
+- **Mixed-delimiter**: pastes where separators vary within a line are handled best-effort with explicit warnings rather than silent guesses (e.g., `"Doe, Jane" 29 8.7` keeps the quoted name intact but may merge trailing single-space-separated numbers).
+- **Citations are plain text**: italics (journal/book titles) can't be carried into plain-text output and be applied in your document. Author/date coverage depends on each site's metadata quality; missing fields degrade gracefully ("n.d.", title-first citations).
 - **HTML `colspan`/`rowspan`** cells are read as flat text cells.
 
 ## License
