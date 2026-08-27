@@ -12,7 +12,7 @@ Also,
 - Getting a quick CSV/JSON version of a webpage table means retyping rows.
 - Citations require a separate generator site with signup friction. (I lowkey hate them. A 20$ subscription for a fucking citation? Really??? Go home.)
 
-Tidy solves "paste messy thing → get clean thing" as one zero-friction destination. (Of course it does since its made by me.)
+Tidy makes it possible to "paste messy thing to get clean thing" as one zero-friction destination. (Of course it does since its made by me.)
 
 <img width="1920" height="951" alt="Screenshot_20260825_194438" src="https://github.com/user-attachments/assets/a74cca1c-dd14-4753-87d1-203530f4f073" />
 
