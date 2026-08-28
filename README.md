@@ -10,16 +10,14 @@ Moving small amounts of structured data between tools that disagree on formattin
 Also, 
 - Tables copied out of PDFs, Wikipedia, or spreadsheets arrive misaligned and break on quoted commas.
 - Getting a quick CSV/JSON version of a webpage table means retyping rows.
-- Citations require a separate generator site with signup friction. (I lowkey hate them. A 20$ subscription for a fucking citation? Really??? Go home.)
+- Citations require a separate generator site with signup friction. (I lowkey hate them. A 20$ subscription for a fucking citation? Really???)
 
 Tidy makes it possible to "paste messy thing to get clean thing" as one zero-friction destination. (Of course it does since its made by me.)
 
-<img width="1920" height="951" alt="Screenshot_20260825_194438" src="https://github.com/user-attachments/assets/a74cca1c-dd14-4753-87d1-203530f4f073" />
+<img width="1920" height="953" alt="Screenshot_20260828_201107" src="https://github.com/user-attachments/assets/55f3b420-3239-42a9-87c0-deb8b9fc8d5c" />
+<img width="1920" height="946" alt="Screenshot_20260828_201131" src="https://github.com/user-attachments/assets/30c9f0c5-9e27-42eb-bf1d-f1a33e13a4d6" />
+<img width="1920" height="947" alt="Screenshot_20260828_201143" src="https://github.com/user-attachments/assets/f443d868-390f-42f2-8b8f-e938898f2539" />
 
-<img width="1918" height="943" alt="Screenshot_20260826_004601" src="https://github.com/user-attachments/assets/b7985857-3f92-4118-aedc-e726ca9a669e" />
-
-
-<img width="1920" height="951" alt="Screenshot_20260826_004658" src="https://github.com/user-attachments/assets/af1afc93-4ad7-49e6-8e61-a175327e6efc" />
 
 ## Features
 
